@@ -1,0 +1,58 @@
+<div class="wrapper">
+  <div class="col-md-4 col-sm-12 mt-3">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          Modes
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="d-flex flex-column">
+          <button class="btn btn-success mt-1" (click)="setMode(modes.general)">General light</button>
+          <button class="btn btn-secondary mt-1" (click)="setMode(modes.soft)">Soft light</button>
+          <button class="btn btn-dark mt-1" (click)="setMode(modes.night)">Night</button>
+          <button class="btn btn-primary mt-1" (click)="setMode(modes.sunset)">Sunset</button>
+          <button class="btn btn-warning mt-1" (click)="setMode(modes.off)">Turn off</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-12 mt-3">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          Custom Value
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="card-subtitle">
+            Pick color
+          </div>
+          <p-colorPicker formControlName="color" format="rgb" [inline]="true"></p-colorPicker>
+          <div class="my-4">
+            <div class="card-subtitle">White: {{whiteVal}}</div>
+            <div class="slider-wrapper">
+              <p-slider formControlName="white" [min]="0" [max]="255"></p-slider>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-12 mt-3">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          Alarm
+        </div>
+      </div>
+      <div class="card-body">
+        <p-calendar [(ngModel)]="dateValue" [touchUI]="true" [timeOnly]="true" ></p-calendar>
+        <button class="btn btn-warning mt-1" (click)="sendAlarm()">Set Alarm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
