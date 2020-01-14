@@ -1,30 +1,31 @@
 <div class="wrapper">
   <div class="col-md-4 col-sm-12 mt-3">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          Modes
+    <div class="card text-white bg-dark border-primary">
+      <div class="card-header border-primary">
+        <div class="card-title ">
+          <h4>Modes</h4>
         </div>
       </div>
       <div class="card-body">
-        <div class="d-flex flex-column">
-          <button class="btn btn-success mt-1" (click)="setMode(modes.general)">General light</button>
-          <button class="btn btn-secondary mt-1" (click)="setMode(modes.soft)">Soft light</button>
-          <button class="btn btn-dark mt-1" (click)="setMode(modes.night)">Night</button>
-          <button class="btn btn-primary mt-1" (click)="setMode(modes.sunset)">Sunset</button>
-          <button class="btn btn-warning mt-1" (click)="setMode(modes.off)">Turn off</button>
+        <div class="mode-buttons-wrapper">
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.general)"> <i class="fas fa-lightbulb"></i></button>
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.soft)"> <i class="far fa-lightbulb"></i></button>
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.gaming)"><i class="fas fa-gamepad"></i></button>
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.night)"> <i class="fas fa-moon"></i> </button>
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.sunset)"><i class="fas fa-sun"></i></button>
+          <button class="btn btn-primary mt-1 mode-button" (click)="setMode(modes.off)"><i class="fas fa-power-off"></i></button>
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-4 col-sm-12 mt-3">
-    <div class="card">
-      <div class="card-header">
+    <div class="card bg-dark text-white border-warning">
+      <div class="card-header border-warning">
         <div class="card-title">
-          Custom Value
+          <h4>Custom Value</h4>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body ">
         <form [formGroup]="form">
           <div class="card-subtitle">
             Pick color
@@ -33,7 +34,7 @@
           <div class="my-4">
             <div class="card-subtitle">White: {{whiteVal}}</div>
             <div class="slider-wrapper">
-              <p-slider formControlName="white" [min]="0" [max]="255"></p-slider>
+              <p-slider formControlName="white" [styleClass]="'w-slider'" [min]="0" [max]="255"></p-slider>
             </div>
           </div>
         </form>
@@ -41,15 +42,17 @@
     </div>
   </div>
   <div class="col-md-4 col-sm-12 mt-3">
-    <div class="card">
-      <div class="card-header">
+    <div class="card bg-dark border-danger text-white">
+      <div class="card-header border-danger">
         <div class="card-title">
-          Alarm
+          <h4>Alarm</h4>
         </div>
       </div>
       <div class="card-body">
-        <p-calendar [(ngModel)]="dateValue" [touchUI]="true" [timeOnly]="true" ></p-calendar>
-        <button class="btn btn-warning mt-1" (click)="sendAlarm()">Set Alarm</button>
+        <div>
+          <p-calendar [(ngModel)]="dateValue" class="" [timeOnly]="true" ></p-calendar>
+        </div>
+        <button class="btn btn-warning mt-1" (click)="sendAlarm()"><i class="fas fa-bell"></i> Set Alarm</button>
       </div>
     </div>
   </div>

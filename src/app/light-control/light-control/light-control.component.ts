@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounce, debounceTime} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {NotificationsService} from 'angular2-notifications';
 
 export interface IColor {
   r: number;
@@ -12,7 +13,7 @@ export interface IColor {
 @Component({
   selector: 'app-light-control',
   templateUrl: './light-control.component.html',
-  styleUrls: ['./light-control.component.css']
+  styleUrls: ['./light-control.component.scss']
 })
 export class LightControlComponent implements OnInit {
 
@@ -29,19 +30,15 @@ export class LightControlComponent implements OnInit {
     general: {color: {r: 0, g: 0, b: 0}, white: 255},
     soft: {color: {r: 0, g: 0, b: 0}, white: 100},
     night: {color: {r: 0, g: 0, b: 0}, white: 2},
-    sunset: {color: {r: 15, g: 5, b: 0}, white: 50},
+    sunset: {color: {r: 25, g: 10, b: 0}, white: 40},
+    gaming: {color: {r: 0, g: 0, b: 0}, white: 3},
     off: {color: {r: 0, g: 0, b: 0}, white: 0},
   };
 
   whiteVal: string = 'Off';
-  alarmForm: FormGroup = new FormGroup(
-    {
-      alarm: new FormControl('2019-12-12T23:10')
-    }
-  );
-  dateValue: any;
+  dateValue: Date = new Date(); // alarmTime
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private ns: NotificationsService) {
   }
 
   ngOnInit() {
@@ -57,7 +54,6 @@ export class LightControlComponent implements OnInit {
   sendLightParams(color: IColor, white: number) {
     let lightConfig: string;
     lightConfig = this.genStringParam(color.r) + this.genStringParam(color.g) + this.genStringParam(color.b) + this.genStringParam(white);
-    console.log(window.location.origin + '/api/light/' + lightConfig);
     this.http.get(window.location.origin + '/api/light/' + lightConfig).subscribe(
       res => console.log(res)
     );
@@ -72,15 +68,25 @@ export class LightControlComponent implements OnInit {
     return ps;
   }
 
-  setMode(mode: {color: IColor, white: number}) {
+  setMode(mode: { color: IColor, white: number }) {
     this.form.reset(mode);
   }
 
   sendAlarm() {
-    let d = new Date();
-
-    this.http.post(window.location.origin + '/api/setAlarm/', JSON.stringify({time: this.alarm})).subscribe(
-      res => console.log(res)
+    const ad = new Date(this.dateValue);
+    if (ad <= new Date()) {
+      ad.setDate(ad.getDate() + 1);
+    }
+    ad.setHours(ad.getHours() + new Date().getTimezoneOffset() / (-60));
+    this.http.post(window.location.origin + '/api/setAlarm/', JSON.stringify({time: ad.toISOString().slice(0, 16)})).subscribe(
+      res => {
+        console.log(res);
+        this.ns.success(null, 'The alarm was set on ' + ad.toISOString().slice(0, 16) );
+      },
+      error => {
+        console.log(error);
+        this.ns.error('Error', 'Failed to set the alarm on ' + ad.toISOString().slice(0, 16));
+      }
     );
   }
 }
